@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 
 def compileVersion = localProperties.getProperty('android.version')
 if (compileVersion == null) {
-    compileVersion = "30"
+    compileVersion = "33"
 }
 
 apply plugin: 'com.android.application'
@@ -41,7 +41,7 @@ android {
         }
     }
 
-    compileSdkVersion compileVersion.toInteger()
+    compileSdkVersion 33
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -53,8 +53,8 @@ android {
 
     defaultConfig {
         applicationId "top.kikt.imagescannerexample"
-        minSdkVersion 16
-        targetSdkVersion compileVersion.toInteger()
+        minSdkVersion 23
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
