@@ -4,23 +4,22 @@ version: 2.2.1+14
 publish_to: none
 
 environment:
-  sdk: ">=2.13.0 <3.0.0"
-  flutter: ">=2.2.0"
+  sdk: ">=2.10.2 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  http: ^0.13.0
-  oktoast: ^3.2.0
-  path_provider: ^2.0.5
+  http: ^0.12.0+4
+  oktoast: ^2.3.1
+  path_provider: ^1.6.11
   photo_manager:
     path: ../
-  provider: ^6.0.0
-  video_player: ^2.1.14
+  provider: ^3.1.0
+  video_player: ^0.10.0
 
 dev_dependencies:
-  flutter_lints: any
+#  flutter_lints: any
 
 flutter:
   uses-material-design: true

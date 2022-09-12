@@ -8,9 +8,9 @@ import 'package:video_player/video_player.dart';
 
 class LivePhotosWidget extends StatefulWidget {
   const LivePhotosWidget({
-    Key? key,
-    required this.entity,
-    required this.useOrigin,
+    Key key,
+     this.entity,
+     this.useOrigin,
   }) : super(key: key);
 
   final AssetEntity entity;
@@ -21,7 +21,7 @@ class LivePhotosWidget extends StatefulWidget {
 }
 
 class _LivePhotosWidgetState extends State<LivePhotosWidget> {
-  VideoPlayerController? _controller;
+  VideoPlayerController _controller;
 
   @override
   void initState() {
@@ -37,7 +37,7 @@ class _LivePhotosWidgetState extends State<LivePhotosWidget> {
         await widget.entity.fileWithSubtype;
       }
     }
-    final String? url = await widget.entity.getMediaUrl();
+    final String url = await widget.entity.getMediaUrl();
     if (!mounted || url == null) {
       return;
     }
@@ -69,12 +69,12 @@ class _LivePhotosWidgetState extends State<LivePhotosWidget> {
       widget.entity,
       isOriginal: widget.useOrigin == true,
       fit: BoxFit.contain,
-      loadingBuilder: (_, Widget child, ImageChunkEvent? progress) {
+      loadingBuilder: (_, Widget child, ImageChunkEvent progress) {
         if (progress != null) {
-          final double? value;
+           double value;
           if (progress.expectedTotalBytes != null) {
             value =
-                progress.cumulativeBytesLoaded / progress.expectedTotalBytes!;
+                progress.cumulativeBytesLoaded / progress.expectedTotalBytes;
           } else {
             value = null;
           }
@@ -100,13 +100,13 @@ class _LivePhotosWidgetState extends State<LivePhotosWidget> {
         aspectRatio: widget.entity.size.aspectRatio,
         child: Stack(
           children: <Widget>[
-            if (_controller?.value.isInitialized == true)
-              Positioned.fill(child: VideoPlayer(_controller!)),
+            if (_controller.value.initialized == true)
+              Positioned.fill(child: VideoPlayer(_controller)),
             if (_controller != null)
               Positioned.fill(
                 child: ValueListenableBuilder<VideoPlayerValue>(
-                  valueListenable: _controller!,
-                  builder: (_, VideoPlayerValue value, Widget? child) {
+                  valueListenable: _controller,
+                  builder: (_, VideoPlayerValue value, Widget child) {
                     return AnimatedOpacity(
                       opacity: value.isPlaying ? 0 : 1,
                       duration: kThemeAnimationDuration,

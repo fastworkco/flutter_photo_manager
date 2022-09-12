@@ -5,7 +5,7 @@ import 'package:photo_manager/photo_manager.dart';
 import '../detail_page.dart';
 
 class CreateEntityById extends StatefulWidget {
-  const CreateEntityById({Key? key}) : super(key: key);
+  const CreateEntityById({Key key}) : super(key: key);
 
   @override
   State<CreateEntityById> createState() => _CreateEntityByIdState();
@@ -45,7 +45,7 @@ class _CreateEntityByIdState extends State<CreateEntityById> {
 
   Future<void> createAssetEntityAndShow() async {
     final String id = controller.text.trim();
-    final AssetEntity? asset = await AssetEntity.fromId(id);
+    final AssetEntity asset = await AssetEntity.fromId(id);
     if (asset == null) {
       showToast('Cannot create asset by $id');
       return;

@@ -30,9 +30,9 @@ class FilterOption {
 
   /// Create a new [FilterOption] with specific properties merging.
   FilterOption copyWith({
-    bool? needTitle,
-    SizeConstraint? sizeConstraint,
-    DurationConstraint? durationConstraint,
+    bool needTitle,
+    SizeConstraint sizeConstraint,
+    DurationConstraint durationConstraint,
   }) {
     return FilterOption(
       needTitle: needTitle ?? this.needTitle,
@@ -96,11 +96,11 @@ class SizeConstraint {
   final bool ignoreSize;
 
   SizeConstraint copyWith({
-    int? minWidth,
-    int? maxWidth,
-    int? minHeight,
-    int? maxHeight,
-    bool? ignoreSize,
+    int minWidth,
+    int maxWidth,
+    int minHeight,
+    int maxHeight,
+    bool ignoreSize,
   }) {
     minWidth ??= this.minWidth;
     maxWidth ??= this.maxHeight;
@@ -185,8 +185,8 @@ class DurationConstraint {
 @immutable
 class DateTimeCond {
   const DateTimeCond({
-    required this.min,
-    required this.max,
+     this.min,
+     this.max,
     this.ignore = false,
   });
 
@@ -201,9 +201,9 @@ class DateTimeCond {
   static final DateTime zero = DateTime.fromMillisecondsSinceEpoch(0);
 
   DateTimeCond copyWith({
-    DateTime? min,
-    DateTime? max,
-    bool? ignore,
+    DateTime min,
+    DateTime max,
+    bool ignore,
   }) {
     return DateTimeCond(
       min: min ?? this.min,
@@ -242,7 +242,7 @@ class OrderOption {
   final OrderOptionType type;
   final bool asc;
 
-  OrderOption copyWith({OrderOptionType? type, bool? asc}) {
+  OrderOption copyWith({OrderOptionType type, bool asc}) {
     return OrderOption(
       asc: asc ?? this.asc,
       type: type ?? this.type,

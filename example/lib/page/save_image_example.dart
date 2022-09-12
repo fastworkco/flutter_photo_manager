@@ -9,7 +9,7 @@ import 'package:photo_manager/photo_manager.dart';
 import '../util/log.dart';
 
 class SaveMediaExample extends StatefulWidget {
-  const SaveMediaExample({Key? key}) : super(key: key);
+  const SaveMediaExample({Key key}) : super(key: key);
 
   @override
   State<SaveMediaExample> createState() => _SaveMediaExampleState();
@@ -46,11 +46,11 @@ class _SaveMediaExampleState extends State<SaveMediaExample> {
     } else if (Platform.isAndroid) {
       dir = (await getExternalStorageDirectories(
         type: StorageDirectory.downloads,
-      ))![0]
+      ))[0]
           .absolute
           .path;
     } else {
-      dir = (await getDownloadsDirectory())!.absolute.path;
+      dir = (await getDownloadsDirectory()).absolute.path;
     }
 
     return '$dir/$name.jpg';
@@ -115,7 +115,7 @@ class _SaveMediaExampleState extends State<SaveMediaExample> {
       file.writeAsBytesSync(data, mode: FileMode.append);
     }, onDone: () async {
       Log.d('file path = ${file.lengthSync()}');
-      final AssetEntity? asset =
+      final AssetEntity asset =
           await PhotoManager.editor.saveVideo(file, title: name);
       Log.d('saved asset: $asset');
       client.close();
@@ -137,7 +137,7 @@ class _SaveMediaExampleState extends State<SaveMediaExample> {
   }
 
   Future<void> saveImage(Uint8List uint8List) async {
-    final AssetEntity? asset = await PhotoManager.editor.saveImage(
+    final AssetEntity asset = await PhotoManager.editor.saveImage(
       uint8List,
       title: '${DateTime.now().millisecondsSinceEpoch}.jpg',
     );
@@ -155,7 +155,7 @@ class _SaveMediaExampleState extends State<SaveMediaExample> {
       file.writeAsBytesSync(data, mode: FileMode.append);
     }, onDone: () async {
       Log.d('write image to file success: $file');
-      final AssetEntity? asset = await PhotoManager.editor.saveImageWithPath(
+      final AssetEntity asset = await PhotoManager.editor.saveImageWithPath(
         file.path,
         title: '${DateTime.now().millisecondsSinceEpoch}.jpg',
       );

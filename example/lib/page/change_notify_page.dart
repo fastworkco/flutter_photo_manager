@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class ChangeNotifyExample extends StatefulWidget {
-  const ChangeNotifyExample({Key? key}) : super(key: key);
+  const ChangeNotifyExample({Key key}) : super(key: key);
 
   @override
   State<ChangeNotifyExample> createState() => _ChangeNotifyExampleState();
@@ -66,7 +66,7 @@ class _ChangeNotifyExampleState extends State<ChangeNotifyExample> {
         return CheckboxListTile(
           title: const Text('Current notify state'),
           value: snapshot.data,
-          onChanged: (bool? newValue) {
+          onChanged: (bool newValue) {
             if (newValue == true) {
               PhotoManager.startChangeNotify();
             } else {

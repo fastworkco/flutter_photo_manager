@@ -6,14 +6,14 @@ import '../model/photo_provider.dart';
 import '../widget/gallery_item_widget.dart';
 
 class GalleryListPage extends StatefulWidget {
-  const GalleryListPage({Key? key}) : super(key: key);
+  const GalleryListPage({Key key}) : super(key: key);
 
   @override
   State<GalleryListPage> createState() => _GalleryListPageState();
 }
 
 class _GalleryListPageState extends State<GalleryListPage> {
-  PhotoProvider get provider => context.watch<PhotoProvider>();
+  PhotoProvider get provider => Provider.of<PhotoProvider>(context);
 
   @override
   Widget build(BuildContext context) {

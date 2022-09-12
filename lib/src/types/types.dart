@@ -73,7 +73,7 @@ class RequestType {
 @Deprecated(
   'Use PermissionRequestOption instead. This will be removed in 3.0.0',
 )
-typedef PermisstionRequestOption = PermissionRequestOption;
+// typedef PermisstionRequestOption = PermissionRequestOption;
 
 /// See [PermissionState].
 @immutable

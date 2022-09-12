@@ -31,5 +31,12 @@ class Methods {
         const val copyAsset = "copyAsset"
         const val moveAssetToPath = "moveAssetToPath"
         const val removeNoExistsAssets = "removeNoExistsAssets"
+        val android13PermissionMethods =
+            arrayOf(
+                fetchPathProperties,
+                getAssetPathList,
+                getAssetListPaged,
+                getAssetListRange,
+            )
     }
 }

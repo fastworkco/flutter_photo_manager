@@ -6,7 +6,7 @@ typedef LogFunction = void Function(
   Object message,
   String tag,
   StackTrace stackTrace, {
-  bool? isError,
+  bool isError,
 });
 
 class Log {
@@ -26,9 +26,9 @@ class Log {
   }
 
   static void i(
-    Object? message, {
+    Object message, {
     String tag = _tag,
-    StackTrace? stackTrace,
+    StackTrace stackTrace,
     bool report = false,
   }) {
     _printLog(
@@ -40,9 +40,9 @@ class Log {
   }
 
   static void d(
-    Object? message, {
+    Object message, {
     String tag = _tag,
-    StackTrace? stackTrace,
+    StackTrace stackTrace,
     bool report = false,
   }) {
     _printLog(
@@ -54,9 +54,9 @@ class Log {
   }
 
   static void w(
-    Object? message, {
+    Object message, {
     String tag = _tag,
-    StackTrace? stackTrace,
+    StackTrace stackTrace,
     bool report = false,
   }) {
     _printLog(
@@ -68,9 +68,9 @@ class Log {
   }
 
   static void e(
-    Object? message, {
+    Object message, {
     String tag = _tag,
-    StackTrace? stackTrace,
+    StackTrace stackTrace,
     bool report = true,
   }) {
     _printLog(
@@ -83,18 +83,18 @@ class Log {
   }
 
   static void json(
-    Object? message, {
+    Object message, {
     String tag = _tag,
-    StackTrace? stackTrace,
+    StackTrace stackTrace,
     bool report = false,
   }) {
     _printLog(message, '$tag 💠', stackTrace, report: report);
   }
 
   static void _printLog(
-    Object? message,
+    Object message,
     String tag,
-    StackTrace? stackTrace, {
+    StackTrace stackTrace, {
     bool isError = false,
     bool report = false,
   }) {

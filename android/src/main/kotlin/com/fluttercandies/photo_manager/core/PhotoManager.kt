@@ -178,7 +178,7 @@ class PhotoManager(private val context: Context) {
         return dbUtils.saveImage(context, image, title, description, relativePath)
     }
 
-    fun saveImage(
+    fun saveImageWithPath(
         path: String,
         title: String,
         description: String,

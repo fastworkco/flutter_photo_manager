@@ -15,3 +15,4 @@ fvm
 doc/
 .env
 *.iml
+example/.fvm/flutter_sdk

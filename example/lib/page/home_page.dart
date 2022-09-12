@@ -11,16 +11,14 @@ import 'filter_option_page.dart';
 import 'gallery_list_page.dart';
 
 class NewHomePage extends StatefulWidget {
-  const NewHomePage({Key? key}) : super(key: key);
+  const NewHomePage({Key key}) : super(key: key);
 
   @override
   State<NewHomePage> createState() => _NewHomePageState();
 }
 
 class _NewHomePageState extends State<NewHomePage> {
-  PhotoProvider get readProvider => context.read<PhotoProvider>();
-
-  PhotoProvider get watchProvider => context.watch<PhotoProvider>();
+  PhotoProvider get provider => Provider.of<PhotoProvider>(context);
 
   @override
   void initState() {
@@ -32,7 +30,7 @@ class _NewHomePageState extends State<NewHomePage> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierBuilder<PhotoProvider>(
-      value: watchProvider,
+      value: provider,
       builder: (_, __) => Scaffold(
         appBar: AppBar(
           title: const Text('photo manager example'),
@@ -52,7 +50,7 @@ class _NewHomePageState extends State<NewHomePage> {
                 Container(width: 10),
               ],
             ),
-            _buildTypeChecks(watchProvider),
+            _buildTypeChecks(provider),
             _buildHasAllCheck(),
             _buildOnlyAllCheck(),
             _buildContainsLivePhotos(),
@@ -60,7 +58,7 @@ class _NewHomePageState extends State<NewHomePage> {
             _buildPathContainsModifiedDateCheck(),
             _buildPngCheck(),
             _buildNotifyCheck(),
-            _buildFilterOption(watchProvider),
+            _buildFilterOption(provider),
           ],
         ),
       ),
@@ -87,7 +85,7 @@ class _NewHomePageState extends State<NewHomePage> {
           contentPadding: const EdgeInsets.symmetric(horizontal: 6),
           title: Text(typeText),
           value: currentType.containsType(type),
-          onChanged: (bool? value) {
+          onChanged: (bool value) {
             if (value == true) {
               provider.changeType(currentType + type);
             } else {
@@ -111,7 +109,7 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Future<void> _scanGalleryList() async {
-    await readProvider.refreshGalleryList();
+    await provider.refreshGalleryList();
     if (!mounted) {
       return;
     }
@@ -126,9 +124,9 @@ class _NewHomePageState extends State<NewHomePage> {
 
   Widget _buildHasAllCheck() {
     return CheckboxListTile(
-      value: watchProvider.hasAll,
-      onChanged: (bool? value) {
-        readProvider.changeHasAll(value);
+      value: provider.hasAll,
+      onChanged: (bool value) {
+        provider.changeHasAll(value);
       },
       title: const Text('hasAll'),
     );
@@ -136,9 +134,9 @@ class _NewHomePageState extends State<NewHomePage> {
 
   Widget _buildPngCheck() {
     return CheckboxListTile(
-      value: watchProvider.thumbFormat == ThumbnailFormat.png,
-      onChanged: (bool? value) {
-        readProvider.changeThumbFormat();
+      value: provider.thumbFormat == ThumbnailFormat.png,
+      onChanged: (bool value) {
+        provider.changeThumbFormat();
       },
       title: const Text('thumb png'),
     );
@@ -146,9 +144,9 @@ class _NewHomePageState extends State<NewHomePage> {
 
   Widget _buildOnlyAllCheck() {
     return CheckboxListTile(
-      value: watchProvider.onlyAll,
-      onChanged: (bool? value) {
-        readProvider.changeOnlyAll(value);
+      value: provider.onlyAll,
+      onChanged: (bool value) {
+        provider.changeOnlyAll(value);
       },
       title: const Text('onlyAll'),
     );
@@ -159,10 +157,10 @@ class _NewHomePageState extends State<NewHomePage> {
       return Container();
     }
     return CheckboxListTile(
-      value: watchProvider.containsLivePhotos,
-      onChanged: (bool? value) {
+      value: provider.containsLivePhotos,
+      onChanged: (bool value) {
         if (value != null) {
-          readProvider.containsLivePhotos = value;
+          provider.containsLivePhotos = value;
         }
       },
       title: const Text('Contains Live Photos'),
@@ -174,10 +172,10 @@ class _NewHomePageState extends State<NewHomePage> {
       return Container();
     }
     return CheckboxListTile(
-      value: watchProvider.onlyLivePhotos,
-      onChanged: (bool? value) {
+      value: provider.onlyLivePhotos,
+      onChanged: (bool value) {
         if (value != null) {
-          readProvider.onlyLivePhotos = value;
+          provider.onlyLivePhotos = value;
         }
       },
       title: const Text('Only Live Photos'),
@@ -186,9 +184,9 @@ class _NewHomePageState extends State<NewHomePage> {
 
   Widget _buildPathContainsModifiedDateCheck() {
     return CheckboxListTile(
-      value: watchProvider.containsPathModified,
-      onChanged: (bool? value) {
-        readProvider.changeContainsPathModified(value);
+      value: provider.containsPathModified,
+      onChanged: (bool value) {
+        provider.changeContainsPathModified(value);
       },
       title: const Text('contains path modified date'),
     );
@@ -196,15 +194,15 @@ class _NewHomePageState extends State<NewHomePage> {
 
   Widget _buildNotifyCheck() {
     return CheckboxListTile(
-      value: watchProvider.notifying,
+      value: provider.notifying,
       title: const Text('onChanged'),
-      onChanged: (bool? value) {
+      onChanged: (bool value) {
         if (value == true) {
           PhotoManager.startChangeNotify();
         } else {
           PhotoManager.stopChangeNotify();
         }
-        readProvider.notifying = value;
+        provider.notifying = value;
       },
     );
   }

@@ -50,11 +50,11 @@ class Editor {
   /// The MIME type will either be formed from the title if you pass one,
   /// or guessed by the system, which does not always work.
   /// {@endtemplate}
-  Future<AssetEntity?> saveImage(
+  Future<AssetEntity> saveImage(
     Uint8List data, {
-    required String title,
-    String? desc,
-    String? relativePath,
+      String title,
+    String desc,
+    String relativePath,
   }) {
     return plugin.saveImage(
       data,
@@ -71,11 +71,11 @@ class Editor {
   /// {@macro photo_manager.Editor.DescriptionWhenSaving}
   ///
   /// {@macro photo_manager.Editor.SavingAssets}
-  Future<AssetEntity?> saveImageWithPath(
+  Future<AssetEntity> saveImageWithPath(
     String path, {
-    required String title,
-    String? desc,
-    String? relativePath,
+      String title,
+    String desc,
+    String relativePath,
   }) {
     return plugin.saveImageWithPath(
       path,
@@ -92,11 +92,11 @@ class Editor {
   /// {@macro photo_manager.Editor.DescriptionWhenSaving}
   ///
   /// {@macro photo_manager.Editor.SavingAssets}
-  Future<AssetEntity?> saveVideo(
+  Future<AssetEntity> saveVideo(
     File file, {
-    required String title,
-    String? desc,
-    String? relativePath,
+     String title,
+    String desc,
+    String relativePath,
   }) {
     return plugin.saveVideo(
       file,
@@ -110,9 +110,9 @@ class Editor {
   ///
   /// - Android: Produce a copy of the original file.
   /// - iOS/macOS: Make a soft link to the target file.
-  Future<AssetEntity?> copyAssetToPath({
-    required AssetEntity asset,
-    required AssetPathEntity pathEntity,
+  Future<AssetEntity> copyAssetToPath({
+     AssetEntity asset,
+     AssetPathEntity pathEntity,
   }) {
     return plugin.copyAssetToGallery(asset, pathEntity);
   }
@@ -125,7 +125,7 @@ class IosEditor {
   /// Folders and albums can be only created under the root path or folders,
   /// so the [parent] should be null, the root path or accessible folders.
   /// {@endtemplate}
-  void _ensureParentIsRootOrFolder(AssetPathEntity? parent) {
+  void _ensureParentIsRootOrFolder(AssetPathEntity parent) {
     if (parent != null && parent.albumType != 2 && !parent.isAll) {
       throw ArgumentError('Use a folder path or the root path.');
     }
@@ -148,9 +148,9 @@ class IosEditor {
   ///
   /// [name] Define the folder name.
   /// {@macro photo_manager.IosEditor.EnsureParentIsRootOrFolder}
-  Future<AssetPathEntity?> createFolder(
+  Future<AssetPathEntity> createFolder(
     String name, {
-    AssetPathEntity? parent,
+    AssetPathEntity parent,
   }) async {
     _ensureParentIsRootOrFolder(parent);
     return plugin.iosCreateFolder(
@@ -164,9 +164,9 @@ class IosEditor {
   ///
   /// [name] Define the album name.
   /// {@macro photo_manager.IosEditor.EnsureParentIsRootOrFolder}
-  Future<AssetPathEntity?> createAlbum(
+  Future<AssetPathEntity> createAlbum(
     String name, {
-    AssetPathEntity? parent,
+    AssetPathEntity parent,
   }) async {
     _ensureParentIsRootOrFolder(parent);
     return plugin.iosCreateAlbum(
@@ -200,9 +200,9 @@ class IosEditor {
     return plugin.iosDeleteCollection(path);
   }
 
-  Future<AssetEntity?> favoriteAsset({
-    required AssetEntity entity,
-    required bool favorite,
+  Future<AssetEntity> favoriteAsset({
+     AssetEntity entity,
+     bool favorite,
   }) async {
     final bool result = await plugin.favoriteAsset(entity.id, favorite);
     if (result) {
@@ -216,8 +216,8 @@ class AndroidEditor {
   const AndroidEditor();
 
   Future<bool> moveAssetToAnother({
-    required AssetEntity entity,
-    required AssetPathEntity target,
+     AssetEntity entity,
+     AssetPathEntity target,
   }) {
     return plugin.androidMoveAssetToPath(entity, target);
   }

@@ -6,7 +6,7 @@ import '../widget/live_photos_widget.dart';
 import '../widget/video_widget.dart';
 
 class DetailPage extends StatefulWidget {
-  const DetailPage({Key? key, required this.entity}) : super(key: key);
+  const DetailPage({Key key,  this.entity}) : super(key: key);
 
   final AssetEntity entity;
 
@@ -15,7 +15,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  bool? useOrigin = true;
+  bool useOrigin = true;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _DetailPageState extends State<DetailPage> {
           if (widget.entity.type == AssetType.image)
             CheckboxListTile(
               title: const Text('Use origin file.'),
-              onChanged: (bool? value) {
+              onChanged: (bool value) {
                 useOrigin = value;
                 setState(() {});
               },
@@ -75,14 +75,14 @@ class _DetailPageState extends State<DetailPage> {
       loadingBuilder: (
         BuildContext context,
         Widget child,
-        ImageChunkEvent? progress,
+        ImageChunkEvent progress,
       ) {
         if (progress == null) {
           return child;
         }
-        final double? value;
+         double value;
         if (progress.expectedTotalBytes != null) {
-          value = progress.cumulativeBytesLoaded / progress.expectedTotalBytes!;
+          value = progress.cumulativeBytesLoaded / progress.expectedTotalBytes;
         } else {
           value = null;
         }

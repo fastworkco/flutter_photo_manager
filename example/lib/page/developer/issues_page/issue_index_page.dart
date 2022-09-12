@@ -6,7 +6,7 @@ import 'issue_734.dart';
 
 class IssuePage extends StatelessWidget {
   const IssuePage({
-    Key? key,
+    Key key,
   }) : super(key: key);
 
   @override
@@ -26,8 +26,8 @@ class IssuePage extends StatelessWidget {
 
 class _NavColumn extends StatelessWidget {
   const _NavColumn({
-    Key? key,
-    required this.children,
+    Key key,
+    this.children,
   }) : super(key: key);
 
   final List<Widget> children;

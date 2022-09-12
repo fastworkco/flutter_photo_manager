@@ -15,7 +15,7 @@ import 'issues_page/issue_index_page.dart';
 import 'remove_all_android_not_exists_example.dart';
 
 class DeveloperIndexPage extends StatefulWidget {
-  const DeveloperIndexPage({Key? key}) : super(key: key);
+  const DeveloperIndexPage({Key key}) : super(key: key);
 
   @override
   State<DeveloperIndexPage> createState() => _DeveloperIndexPageState();
@@ -98,7 +98,7 @@ class _DeveloperIndexPageState extends State<DeveloperIndexPage> {
     //   await tmpAsset.originFile;
     // }
 
-    final File? file = await asset.originFile;
+    final File file = await asset.originFile;
     if (file == null) {
       return;
     }
@@ -142,7 +142,7 @@ class _DeveloperIndexPageState extends State<DeveloperIndexPage> {
     }, onDone: () async {
       client.close();
       Log.d('the video file length = ${f.lengthSync()}');
-      final AssetEntity? result =
+      final AssetEntity result =
           await PhotoManager.editor.saveVideo(f, title: title);
       if (result != null) {
         Log.d('result : ${(await result.originFile)?.path}');

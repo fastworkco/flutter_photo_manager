@@ -14,9 +14,9 @@ class CommonUtil {
   ) async {
     final LatLng latlng = await entity.latlngAsync();
 
-    final double? lat =
+    final double lat =
         entity.latitude == 0 ? latlng.latitude : entity.latitude;
-    final double? lng =
+    final double lng =
         entity.longitude == 0 ? latlng.longitude : entity.longitude;
 
     final Widget w = Center(
@@ -53,7 +53,7 @@ class CommonUtil {
     showDialog<void>(context: context, builder: (BuildContext c) => w);
   }
 
-  static Widget _buildInfoItem(String title, String? info) {
+  static Widget _buildInfoItem(String title, String info) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -71,10 +71,10 @@ class CommonUtil {
     );
   }
 
-  static Widget _buildInfoItemAsync(String title, Future<String?> info) {
-    return FutureBuilder<String?>(
+  static Widget _buildInfoItemAsync(String title, Future<String> info) {
+    return FutureBuilder<String>(
       future: info,
-      builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         if (!snapshot.hasData) {
           return _buildInfoItem(title, '');
         }
@@ -86,7 +86,7 @@ class CommonUtil {
 
 Future<T> elapsedFuture<T>(
   Future<T> future, {
-  String? prefix,
+  String prefix,
 }) async {
   final Stopwatch stopwatch = Stopwatch()..start();
   final T result = await future;

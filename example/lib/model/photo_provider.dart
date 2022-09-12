@@ -20,7 +20,7 @@ class PhotoProvider extends ChangeNotifier {
 
   bool get needTitle => _needTitle;
 
-  set needTitle(bool? needTitle) {
+  set needTitle(bool needTitle) {
     if (needTitle == null) {
       return;
     }
@@ -77,7 +77,7 @@ class PhotoProvider extends ChangeNotifier {
 
   bool get asc => _asc;
 
-  set asc(bool? asc) {
+  set asc(bool asc) {
     if (asc == null) {
       return;
     }
@@ -104,7 +104,7 @@ class PhotoProvider extends ChangeNotifier {
 
   bool get ignoreSize => _ignoreSize;
 
-  set ignoreSize(bool? ignoreSize) {
+  set ignoreSize(bool ignoreSize) {
     if (ignoreSize == null) {
       return;
     }
@@ -130,7 +130,7 @@ class PhotoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  set notifying(bool? notifying) {
+  set notifying(bool notifying) {
     if (notifying == null) {
       return;
     }
@@ -143,7 +143,7 @@ class PhotoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeHasAll(bool? value) {
+  void changeHasAll(bool value) {
     if (value == null) {
       return;
     }
@@ -151,7 +151,7 @@ class PhotoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeOnlyAll(bool? value) {
+  void changeOnlyAll(bool value) {
     if (value == null) {
       return;
     }
@@ -159,7 +159,7 @@ class PhotoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeContainsPathModified(bool? value) {
+  void changeContainsPathModified(bool value) {
     if (value == null) {
       return;
     }
@@ -258,8 +258,8 @@ class AssetPathProvider extends ChangeNotifier {
   List<AssetEntity> list = <AssetEntity>[];
   int page = 0;
 
-  int get assetCount => _assetCount!;
-  int? _assetCount;
+  int get assetCount => _assetCount;
+  int _assetCount;
 
   int get showItemCount {
     if (_assetCount != null && list.length == _assetCount) {

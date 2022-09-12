@@ -8,8 +8,8 @@ import '../util/log.dart';
 
 class VideoWidget extends StatefulWidget {
   const VideoWidget({
-    Key? key,
-    required this.entity,
+    Key key,
+    this.entity,
     this.usingMediaUrl = true,
   }) : super(key: key);
 
@@ -22,7 +22,7 @@ class VideoWidget extends StatefulWidget {
 
 class _VideoWidgetState extends State<VideoWidget> {
   final Stopwatch _stopwatch = Stopwatch();
-  VideoPlayerController? _controller;
+  VideoPlayerController _controller;
 
   bool get isAudio => widget.entity.type == AssetType.audio;
 
@@ -44,7 +44,7 @@ class _VideoWidgetState extends State<VideoWidget> {
   }
 
   void _initVideoWithFile() {
-    widget.entity.file.then((File? file) {
+    widget.entity.file.then((File file) {
       _stopwatch.stop();
       Log.d('Elapsed time for `file`: ${_stopwatch.elapsed}');
       if (!mounted || file == null) {
@@ -58,7 +58,7 @@ class _VideoWidgetState extends State<VideoWidget> {
   }
 
   void _initVideoWithMediaUrl() {
-    widget.entity.getMediaUrl().then((String? url) {
+    widget.entity.getMediaUrl().then((String url) {
       _stopwatch.stop();
       Log.d('Elapsed time for `getMediaUrl`: ${_stopwatch.elapsed}');
       if (!mounted || url == null) {
@@ -72,7 +72,7 @@ class _VideoWidgetState extends State<VideoWidget> {
   }
 
   Widget buildVideoPlayer() {
-    final VideoPlayerController controller = _controller!;
+    final VideoPlayerController controller = _controller;
     return Stack(
       children: <Widget>[
         if (isAudio)
@@ -102,10 +102,10 @@ class _VideoWidgetState extends State<VideoWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_controller?.value.isInitialized != true) {
+    if (_controller.value.initialized != true) {
       return const SizedBox.shrink();
     }
-    final VideoPlayerController c = _controller!;
+    final VideoPlayerController c = _controller;
     return AspectRatio(
       aspectRatio: isAudio ? 1 : c.value.aspectRatio,
       child: GestureDetector(

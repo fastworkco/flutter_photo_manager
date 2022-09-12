@@ -35,7 +35,7 @@ class ThumbnailSize {
   ThumbnailSize get flipped => ThumbnailSize(height, width);
 
   @override
-  bool operator ==(Object other) {
+  bool operator ==( other) {
     if (other is! ThumbnailSize) {
       return false;
     }
@@ -53,7 +53,7 @@ class ThumbnailSize {
 @immutable
 class ThumbnailOption {
   const ThumbnailOption({
-    required this.size,
+    this.size,
     this.format = ThumbnailFormat.jpeg,
     this.quality = PMConstants.vDefaultThumbnailQuality,
     this.frame = 0,
@@ -61,7 +61,7 @@ class ThumbnailOption {
 
   /// Construct thumbnail options only for iOS/macOS.
   factory ThumbnailOption.ios({
-    required ThumbnailSize size,
+     ThumbnailSize size,
     ThumbnailFormat format = ThumbnailFormat.jpeg,
     int quality = PMConstants.vDefaultThumbnailQuality,
     DeliveryMode deliveryMode = DeliveryMode.opportunistic,
@@ -120,7 +120,7 @@ class ThumbnailOption {
   int get hashCode => hashValues(size, format, quality, frame);
 
   @override
-  bool operator ==(Object other) {
+  bool operator ==( other) {
     if (other is! ThumbnailOption) {
       return false;
     }
@@ -134,12 +134,12 @@ class ThumbnailOption {
 @immutable
 class _IOSThumbnailOption extends ThumbnailOption {
   const _IOSThumbnailOption({
-    required ThumbnailSize size,
+     ThumbnailSize size,
     ThumbnailFormat format = ThumbnailFormat.jpeg,
     int quality = PMConstants.vDefaultThumbnailQuality,
-    required this.deliveryMode,
-    required this.resizeMode,
-    required this.resizeContentMode,
+     this.deliveryMode,
+     this.resizeMode,
+     this.resizeContentMode,
   }) : super(size: size, format: format, quality: quality);
 
   final DeliveryMode deliveryMode;
@@ -161,7 +161,7 @@ class _IOSThumbnailOption extends ThumbnailOption {
       hashValues(super.hashCode, deliveryMode, resizeMode, resizeContentMode);
 
   @override
-  bool operator ==(Object other) {
+  bool operator ==( other) {
     if (other is! _IOSThumbnailOption) {
       return false;
     }

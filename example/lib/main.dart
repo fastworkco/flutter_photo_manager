@@ -19,7 +19,7 @@ void main() {
 }
 
 class _SimpleExampleApp extends StatelessWidget {
-  const _SimpleExampleApp({Key? key}) : super(key: key);
+  const _SimpleExampleApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class _SimpleExampleApp extends StatelessWidget {
 }
 
 class _SimpleExamplePage extends StatefulWidget {
-  const _SimpleExamplePage({Key? key}) : super(key: key);
+  const _SimpleExamplePage({Key key}) : super(key: key);
 
   @override
   _SimpleExamplePageState createState() => _SimpleExamplePageState();
@@ -51,8 +51,8 @@ class _SimpleExamplePageState extends State<_SimpleExamplePage> {
   );
   final int _sizePerPage = 50;
 
-  AssetPathEntity? _path;
-  List<AssetEntity>? _entities;
+  AssetPathEntity _path;
+  List<AssetEntity> _entities;
   int _totalEntitiesCount = 0;
 
   int _page = 0;
@@ -96,8 +96,8 @@ class _SimpleExamplePageState extends State<_SimpleExamplePage> {
     setState(() {
       _path = paths.first;
     });
-    _totalEntitiesCount = await _path!.assetCountAsync;
-    final List<AssetEntity> entities = await _path!.getAssetListPaged(
+    _totalEntitiesCount = await _path.assetCountAsync;
+    final List<AssetEntity> entities = await _path.getAssetListPaged(
       page: 0,
       size: _sizePerPage,
     );
@@ -107,12 +107,12 @@ class _SimpleExamplePageState extends State<_SimpleExamplePage> {
     setState(() {
       _entities = entities;
       _isLoading = false;
-      _hasMoreToLoad = _entities!.length < _totalEntitiesCount;
+      _hasMoreToLoad = _entities.length < _totalEntitiesCount;
     });
   }
 
   Future<void> _loadMoreAsset() async {
-    final List<AssetEntity> entities = await _path!.getAssetListPaged(
+    final List<AssetEntity> entities = await _path.getAssetListPaged(
       page: _page + 1,
       size: _sizePerPage,
     );
@@ -120,9 +120,9 @@ class _SimpleExamplePageState extends State<_SimpleExamplePage> {
       return;
     }
     setState(() {
-      _entities!.addAll(entities);
+      _entities.addAll(entities);
       _page++;
-      _hasMoreToLoad = _entities!.length < _totalEntitiesCount;
+      _hasMoreToLoad = _entities.length < _totalEntitiesCount;
       _isLoadingMore = false;
     });
   }
@@ -143,19 +143,19 @@ class _SimpleExamplePageState extends State<_SimpleExamplePage> {
       ),
       childrenDelegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
-          if (index == _entities!.length - 8 &&
+          if (index == _entities.length - 8 &&
               !_isLoadingMore &&
               _hasMoreToLoad) {
             _loadMoreAsset();
           }
-          final AssetEntity entity = _entities![index];
+          final AssetEntity entity = _entities[index];
           return ImageItemWidget(
             key: ValueKey<int>(index),
             entity: entity,
             option: const ThumbnailOption(size: ThumbnailSize.square(200)),
           );
         },
-        childCount: _entities!.length,
+        childCount: _entities.length,
         findChildIndexCallback: (Key key) {
           // Re-use elements.
           if (key is ValueKey<int>) {

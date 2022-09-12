@@ -5,8 +5,8 @@ import '../../util/log.dart';
 
 class DurationPicker extends StatefulWidget {
   const DurationPicker({
-    Key? key,
-    required this.initDuration,
+    Key key,
+     this.initDuration,
   }) : super(key: key);
 
   final Duration initDuration;
@@ -16,12 +16,9 @@ class DurationPicker extends StatefulWidget {
 }
 
 class _DurationPickerState extends State<DurationPicker> {
-  late int hours =
-      widget.initDuration.inMicroseconds ~/ Duration.microsecondsPerHour;
-  late int minutes =
-      widget.initDuration.inMicroseconds ~/ Duration.microsecondsPerMinute % 60;
-  late int seconds =
-      widget.initDuration.inMicroseconds ~/ Duration.microsecondsPerSecond % 60;
+    int hours;
+   int minutes;
+   int seconds;
 
   @override
   void initState() {
@@ -34,6 +31,12 @@ class _DurationPickerState extends State<DurationPicker> {
 
   @override
   Widget build(BuildContext context) {
+    hours =
+        widget.initDuration.inMicroseconds ~/ Duration.microsecondsPerHour;
+     minutes =
+        widget.initDuration.inMicroseconds ~/ Duration.microsecondsPerMinute % 60;
+     seconds =
+        widget.initDuration.inMicroseconds ~/ Duration.microsecondsPerSecond % 60;
     return SafeArea(
       child: Align(
         alignment: Alignment.bottomCenter,
@@ -105,10 +108,10 @@ class _DurationPickerState extends State<DurationPicker> {
   }
 
   Widget _buildPicker({
-    required String title,
-    required int currentValue,
-    required int max,
-    ValueChanged<int>? valueChanged,
+     String title,
+     int currentValue,
+     int max,
+    ValueChanged<int> valueChanged,
   }) {
     return Expanded(
         child: Stack(
@@ -140,9 +143,9 @@ class _DurationPickerState extends State<DurationPicker> {
   }
 }
 
-Future<Duration?> showCupertinoDurationPicker({
-  required BuildContext context,
-  required Duration initDuration,
+Future<Duration> showCupertinoDurationPicker({
+   BuildContext context,
+   Duration initDuration,
 }) {
   return showDialog(
     context: context,

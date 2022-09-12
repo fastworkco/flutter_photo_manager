@@ -3,8 +3,8 @@ import 'package:photo_manager/photo_manager.dart';
 
 class MoveToAnotherExample extends StatefulWidget {
   const MoveToAnotherExample({
-    Key? key,
-    required this.entity,
+    Key key,
+     this.entity,
   }) : super(key: key);
 
   final AssetEntity entity;
@@ -15,7 +15,7 @@ class MoveToAnotherExample extends StatefulWidget {
 
 class _MoveToAnotherExampleState extends State<MoveToAnotherExample> {
   List<AssetPathEntity> targetPathList = <AssetPathEntity>[];
-  AssetPathEntity? target;
+  AssetPathEntity target;
 
   @override
   void initState() {
@@ -55,13 +55,13 @@ class _MoveToAnotherExampleState extends State<MoveToAnotherExample> {
     return AssetEntityImage(
       widget.entity,
       thumbnailSize: const ThumbnailSize.square(500),
-      loadingBuilder: (_, Widget child, ImageChunkEvent? progress) {
+      loadingBuilder: (_, Widget child, ImageChunkEvent progress) {
         if (progress == null) {
           return child;
         }
-        final double? value;
+         double value;
         if (progress.expectedTotalBytes != null) {
-          value = progress.cumulativeBytesLoaded / progress.expectedTotalBytes!;
+          value = progress.cumulativeBytesLoaded / progress.expectedTotalBytes;
         } else {
           value = null;
         }
@@ -79,7 +79,7 @@ class _MoveToAnotherExampleState extends State<MoveToAnotherExample> {
     return DropdownButton<AssetPathEntity>(
       items: targetPathList.map((AssetPathEntity v) => _buildItem(v)).toList(),
       value: target,
-      onChanged: (AssetPathEntity? value) {
+      onChanged: (AssetPathEntity value) {
         target = value;
         setState(() {});
       },
@@ -101,10 +101,10 @@ class _MoveToAnotherExampleState extends State<MoveToAnotherExample> {
       onPressed: () {
         PhotoManager.editor.android.moveAssetToAnother(
           entity: widget.entity,
-          target: target!,
+          target: target,
         );
       },
-      child: Text("Move to ' ${target!.name} '"),
+      child: Text("Move to ' ${target.name} '"),
     );
   }
 }

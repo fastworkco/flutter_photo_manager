@@ -3,7 +3,6 @@ package com.fluttercandies.photo_manager.core
 import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
 import android.os.Handler
@@ -139,7 +138,7 @@ class PhotoManagerPlugin(
                 call,
                 resultHandler,
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-                        && havePermissionInManifest(
+                        && permissionsUtils.havePermissionInManifest(
                     applicationContext,
                     Manifest.permission.ACCESS_MEDIA_LOCATION
                 )
@@ -158,24 +157,40 @@ class PhotoManagerPlugin(
         val needWritePermission =
             permissionsUtils.needWriteExternalStorage(call)
                     && Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q
-                    && havePermissionInManifest(
+                    && permissionsUtils.havePermissionInManifest(
                 applicationContext,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        val needReadPermission =
+            Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU
+                    && permissionsUtils.havePermissionInManifest(
+                applicationContext,
+                Manifest.permission.READ_EXTERNAL_STORAGE
             )
         val needLocationPermission =
             permissionsUtils.needAccessLocation(call)
                     && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-                    && havePermissionInManifest(
+                    && permissionsUtils.havePermissionInManifest(
                 applicationContext,
                 Manifest.permission.ACCESS_MEDIA_LOCATION
             )
-        val permissions = arrayListOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+//        val permissions = arrayListOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+        val permissions = arrayListOf<String>()
+        if (needReadPermission) {
+            permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
         if (needWritePermission) {
             permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
         if (needLocationPermission) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 permissions.add(Manifest.permission.ACCESS_MEDIA_LOCATION)
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissionsUtils.addManifestWithPermission33(applicationContext, permissions, call, resultHandler)
+            if (resultHandler.isReplied()) {
+                return
             }
         }
 
@@ -209,14 +224,6 @@ class PhotoManagerPlugin(
         utils.getPermissions(3001, permissions)
     }
 
-    private fun havePermissionInManifest(context: Context, permission: String): Boolean {
-        val applicationInfo = context.applicationInfo
-        val packageInfo = context.packageManager.getPackageInfo(
-            applicationInfo.packageName,
-            PackageManager.GET_PERMISSIONS
-        )
-        return packageInfo.requestedPermissions.contains(permission)
-    }
 
     private fun replyPermissionError(resultHandler: ResultHandler) {
         resultHandler.replyError(
@@ -298,7 +305,8 @@ class PhotoManagerPlugin(
             Methods.getFullFile -> {
                 runOnBackground {
                     val id = call.argument<String>("id")!!
-                    val isOrigin = if (!needLocationPermission) false else call.argument<Boolean>("isOrigin")!!
+                    val isOrigin =
+                        if (!needLocationPermission) false else call.argument<Boolean>("isOrigin")!!
                     photoManager.getFile(id, isOrigin, resultHandler)
                 }
             }
@@ -388,7 +396,7 @@ class PhotoManagerPlugin(
                         val title = call.argument<String>("title") ?: ""
                         val desc = call.argument<String>("desc") ?: ""
                         val relativePath = call.argument<String>("relativePath") ?: ""
-                        val entity = photoManager.saveImage(imagePath, title, desc, relativePath)
+                        val entity = photoManager.saveImageWithPath(imagePath, title, desc, relativePath)
                         if (entity == null) {
                             resultHandler.reply(null)
                             return@runOnBackground

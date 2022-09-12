@@ -7,8 +7,8 @@ import '../util/log.dart';
 
 class CopyToAnotherGalleryPage extends StatefulWidget {
   const CopyToAnotherGalleryPage({
-    Key? key,
-    required this.assetEntity,
+    Key key,
+     this.assetEntity,
   }) : super(key: key);
 
   final AssetEntity assetEntity;
@@ -19,7 +19,7 @@ class CopyToAnotherGalleryPage extends StatefulWidget {
 }
 
 class _CopyToAnotherGalleryPageState extends State<CopyToAnotherGalleryPage> {
-  AssetPathEntity? targetGallery;
+  AssetPathEntity targetGallery;
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +37,14 @@ class _CopyToAnotherGalleryPageState extends State<CopyToAnotherGalleryPage> {
             child: AssetEntityImage(
               widget.assetEntity,
               thumbnailSize: const ThumbnailSize.square(500),
-              loadingBuilder: (_, Widget child, ImageChunkEvent? progress) {
+              loadingBuilder: (_, Widget child, ImageChunkEvent progress) {
                 if (progress == null) {
                   return child;
                 }
-                final double? value;
+                 double value;
                 if (progress.expectedTotalBytes != null) {
                   value = progress.cumulativeBytesLoaded /
-                      progress.expectedTotalBytes!;
+                      progress.expectedTotalBytes;
                 } else {
                   value = null;
                 }
@@ -58,7 +58,7 @@ class _CopyToAnotherGalleryPageState extends State<CopyToAnotherGalleryPage> {
             ),
           ),
           DropdownButton<AssetPathEntity>(
-            onChanged: (AssetPathEntity? value) {
+            onChanged: (AssetPathEntity value) {
               targetGallery = value;
               setState(() {});
             },
@@ -86,9 +86,9 @@ class _CopyToAnotherGalleryPageState extends State<CopyToAnotherGalleryPage> {
     if (targetGallery == null) {
       return;
     }
-    final AssetEntity? result = await PhotoManager.editor.copyAssetToPath(
+    final AssetEntity result = await PhotoManager.editor.copyAssetToPath(
       asset: widget.assetEntity,
-      pathEntity: targetGallery!,
+      pathEntity: targetGallery,
     );
 
     Log.d('copy result = $result');
@@ -100,7 +100,7 @@ class _CopyToAnotherGalleryPageState extends State<CopyToAnotherGalleryPage> {
       child: Text(
         targetGallery == null
             ? 'Please select gallery'
-            : 'copy to ${targetGallery!.name}',
+            : 'copy to ${targetGallery.name}',
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:photo_manager_example/widget/change_notifier_builder.dart';
 import 'package:provider/provider.dart';
 
 import '../model/photo_provider.dart';
@@ -19,8 +20,8 @@ import 'move_to_another_gallery_example.dart';
 
 class GalleryContentListPage extends StatefulWidget {
   const GalleryContentListPage({
-    Key? key,
-    required this.path,
+    Key key,
+     this.path,
   }) : super(key: key);
 
   final AssetPathEntity path;
@@ -30,15 +31,14 @@ class GalleryContentListPage extends StatefulWidget {
 }
 
 class _GalleryContentListPageState extends State<GalleryContentListPage> {
-  late final PhotoProvider photoProvider = Provider.of<PhotoProvider>(context);
+  PhotoProvider get photoProvider => Provider.of<PhotoProvider>(context);
 
   AssetPathEntity get path => widget.path;
 
-  AssetPathProvider readPathProvider(BuildContext c) =>
-      c.read<AssetPathProvider>();
+  AssetPathProvider get readPathProvider =>
+      Provider.of<AssetPathProvider>(context);
 
-  AssetPathProvider watchPathProvider(BuildContext c) =>
-      c.watch<AssetPathProvider>();
+
 
   @override
   void initState() {
@@ -70,13 +70,21 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AssetPathProvider>(
-      create: (_) => AssetPathProvider(widget.path),
-      builder: (BuildContext context, _) => Scaffold(
-        appBar: AppBar(title: Text(path.name)),
-        body: buildRefreshIndicator(context),
-      ),
-    );
+    return
+        ChangeNotifierBuilder(value: readPathProvider,
+        builder: (_,__){
+          Scaffold(
+                  appBar: AppBar(title: Text(path.name)),
+                  body: buildRefreshIndicator(context),
+                );
+        });
+    //   ChangeNotifierProvider<AssetPathProvider>(
+    //   create: (_) => AssetPathProvider(widget.path),
+    //   builder: (BuildContext context, _) => Scaffold(
+    //     appBar: AppBar(title: Text(path.name)),
+    //     body: buildRefreshIndicator(context),
+    //   ),
+    // );
   }
 
   Widget buildRefreshIndicator(BuildContext context) {
@@ -92,7 +100,7 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
                     builder: (BuildContext c) => _buildItem(context, index),
                   ),
                   childCount: p.showItemCount,
-                  findChildIndexCallback: (Key? key) {
+                  findChildIndexCallback: (Key key) {
                     if (key is ValueKey<String>) {
                       return findChildIndexBuilder(
                         id: key.value,
@@ -116,7 +124,7 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
   }
 
   Widget _buildItem(BuildContext context, int index) {
-    final List<AssetEntity> list = watchPathProvider(context).list;
+    final List<AssetEntity> list = readPathProvider.list;
     if (list.length == index) {
       onLoadMore(context);
       return loadWidget;
@@ -148,7 +156,7 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
               child: const Text('getMediaUrl'),
               onPressed: () async {
                 final Stopwatch watch = Stopwatch()..start();
-                final String? url = await entity.getMediaUrl();
+                final String url = await entity.getMediaUrl();
                 watch.stop();
                 Log.d('Media URL: $url');
                 Log.d(watch.elapsed);
@@ -197,7 +205,7 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
                     entity: entity,
                     favorite: !isFavorite,
                   );
-                  final AssetEntity? newEntity =
+                  final AssetEntity newEntity =
                       await entity.obtainForNewProperties();
                   print('New isFavorite: ${newEntity?.isFavorite}');
                   if (!mounted) {
@@ -205,7 +213,7 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
                   }
                   if (newEntity != null) {
                     entity = newEntity;
-                    readPathProvider(context).list[index] = newEntity;
+                    readPathProvider.list[index] = newEntity;
                     setState(() {});
                   }
                 },
@@ -217,8 +225,8 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
   }
 
   int findChildIndexBuilder({
-    required String id,
-    required List<AssetEntity> assets,
+     String id,
+     List<AssetEntity> assets,
   }) {
     return assets.indexWhere((AssetEntity e) => e.id == id);
   }
@@ -233,14 +241,14 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
     if (!mounted) {
       return;
     }
-    await readPathProvider(context).onLoadMore();
+    await readPathProvider.onLoadMore();
   }
 
   Future<void> _onRefresh(BuildContext context) async {
     if (!mounted) {
       return;
     }
-    await readPathProvider(context).onRefresh();
+    await readPathProvider.onRefresh();
   }
 
   Future<void> _deleteCurrent(BuildContext context, AssetEntity entity) async {
@@ -254,7 +262,7 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
               style: TextStyle(color: Colors.red),
             ),
             onPressed: () async {
-              readPathProvider(context).delete(entity);
+              readPathProvider.delete(entity);
               Navigator.pop(context);
             },
           ),
@@ -266,29 +274,29 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
       );
       showDialog<void>(context: context, builder: (_) => dialog);
     } else {
-      readPathProvider(context).delete(entity);
+      readPathProvider.delete(entity);
     }
   }
 
   Future<void> showOriginBytes(AssetEntity entity) async {
-    final String title;
+     String title;
     if (entity.title?.isEmpty != false) {
       title = await entity.titleAsync;
     } else {
-      title = entity.title!;
+      title = entity.title;
     }
     Log.d('entity.title = $title');
     showDialog<void>(
       context: context,
       builder: (_) {
-        return FutureBuilder<Uint8List?>(
+        return FutureBuilder<Uint8List>(
           future: entity.originBytes,
-          builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
             Widget w;
             if (snapshot.hasError) {
-              return ErrorWidget(snapshot.error!);
+              return ErrorWidget(snapshot.error);
             } else if (snapshot.hasData) {
-              w = Image.memory(snapshot.data!);
+              w = Image.memory(snapshot.data);
             } else {
               w = Center(
                 child: Container(
@@ -329,7 +337,7 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
   }
 
   void deleteAssetInAlbum(AssetEntity entity) {
-    readPathProvider(context).removeInAlbum(entity);
+    readPathProvider.removeInAlbum(entity);
   }
 
   Widget _buildMoveAnotherPath(AssetEntity entity) {
@@ -348,29 +356,29 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
   }
 
   Future<void> showThumb(AssetEntity entity, int size) async {
-    final String title;
+     String title;
     if (entity.title?.isEmpty != false) {
       title = await entity.titleAsync;
     } else {
-      title = entity.title!;
+      title = entity.title;
     }
     Log.d('entity.title = $title');
     return showDialog(
       context: context,
       builder: (_) {
-        return FutureBuilder<Uint8List?>(
+        return FutureBuilder<Uint8List>(
           future: entity.thumbnailDataWithOption(
             ThumbnailOption.ios(
               size: const ThumbnailSize.square(500),
               // resizeContentMode: ResizeContentMode.fill,
             ),
           ),
-          builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
             Widget w;
             if (snapshot.hasError) {
-              return ErrorWidget(snapshot.error!);
+              return ErrorWidget(snapshot.error);
             } else if (snapshot.hasData) {
-              final Uint8List data = snapshot.data!;
+              final Uint8List data = snapshot.data;
               ui.decodeImageFromList(data, (ui.Image result) {
                 Log.d('result size: ${result.width}x${result.height}');
                 // for 4288x2848
@@ -412,7 +420,7 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
 
     // Log.d('thumb length = ${thumb.length}');
 
-    final File? file = await entity.loadFile(
+    final File file = await entity.loadFile(
       progressHandler: progressHandler,
     );
     Log.d('file = $file');
@@ -425,7 +433,7 @@ class _GalleryContentListPageState extends State<GalleryContentListPage> {
       //   height: size,
       //   resizeMode: ResizeMode.exact,
       // ));
-      final Uint8List? data = await entity.thumbnailDataWithSize(
+      final Uint8List data = await entity.thumbnailDataWithSize(
         ThumbnailSize.square(size),
       );
 

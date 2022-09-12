@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 class EditAssetPage extends StatefulWidget {
-  const EditAssetPage({Key? key}) : super(key: key);
+  const EditAssetPage({Key key}) : super(key: key);
 
   @override
   State<EditAssetPage> createState() => _EditAssetPageState();
 }
 
 class _EditAssetPageState extends State<EditAssetPage> {
-  AssetEntity? entity;
+  AssetEntity entity;
 
   @override
   void initState() {
@@ -33,25 +33,25 @@ class _EditAssetPageState extends State<EditAssetPage> {
                 children: <Widget>[
                   AspectRatio(
                     aspectRatio: 1,
-                    child: FutureBuilder<Uint8List?>(
-                      future: entity!.originBytes,
-                      builder: (_, AsyncSnapshot<Uint8List?> s) {
+                    child: FutureBuilder<Uint8List>(
+                      future: entity.originBytes,
+                      builder: (_, AsyncSnapshot<Uint8List> s) {
                         if (!s.hasData) {
                           return Container();
                         }
-                        return Image.memory(s.data!);
+                        return Image.memory(s.data);
                       },
                     ),
                   ),
                   AspectRatio(
                     aspectRatio: 1,
-                    child: FutureBuilder<File?>(
-                      future: entity!.file,
-                      builder: (_, AsyncSnapshot<File?> s) {
+                    child: FutureBuilder<File>(
+                      future: entity.file,
+                      builder: (_, AsyncSnapshot<File> s) {
                         if (!s.hasData) {
                           return Container();
                         }
-                        return Image.file(s.data!);
+                        return Image.file(s.data);
                       },
                     ),
                   ),
